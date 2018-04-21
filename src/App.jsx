@@ -1,9 +1,45 @@
 import React, { Component } from 'react';
+import styled from 'react-emotion';
 
 import RangeInput from './components/rangeInput';
-import Table from './components/table';
+import SensorTable from './components/table';
 import FovCanvas from './components/fovCanvas';
 import SensorSelect from './components/sensorSelect';
+
+const Card = styled('section')`
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 2px 3px rgba(140, 140, 140, 0.5), 0 0 1px rgba(0, 0, 0, .14);
+  border-radius: 2px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  :first-child {
+    margin-top: 1rem;
+  }
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const Row = styled('div')`
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 480px) {
+    flex-direction: row;
+    > * {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+  }
+`;
+
+const Column = styled('div')`
+  display: flex;
+  flex-direction: column;
+`;
 
 // sort sensors for their crop factor ascending
 const SENSORS = require('./sensor-formats')
@@ -55,16 +91,16 @@ class App extends Component {
     return (
       <main>
 
-        <header className="card">
+        <Card>
           <h1>Focal length comparison</h1>
           <p>Compare different focal lengths on various sensors</p>
-        </header>
+        </Card>
 
-        <section className="card">
+        <Card>
           <h3>Focal length and sensor/frame size</h3>
 
-          <div className="row">
-            <div className="column">
+          <Row>
+            <Column>
               <RangeInput
                 title="Input Focal length"
                 value={focalLength}
@@ -78,9 +114,9 @@ class App extends Component {
                 <span>Focal length on selected crop: </span>
                 <b>{Math.round(focalLength * crop)}mm</b>
               </p>
-            </div>
+            </Column>
 
-            <div className="column">
+            <Column>
               <SensorSelect
                 sensors={SENSORS}
                 selectedIndex={selectedSensorIndex}
@@ -89,12 +125,12 @@ class App extends Component {
               <pre>
                 {JSON.stringify(selectedSensor, null, 2)}
               </pre>
-            </div>
-          </div>
+            </Column>
+          </Row>
 
-        </section>
+        </Card>
 
-        <section className="card">
+        <Card>
           <h3>Field of view</h3>
           <FovCanvas
             width={500}
@@ -102,11 +138,11 @@ class App extends Component {
             focalLength={focalLength}
             crop={crop}
           />
-        </section>
+        </Card>
 
-        <section className="card">
+        <Card>
           <h3>Sensors</h3>
-          <Table
+          <SensorTable
             header={tableHeader}
             data={SENSORS}
             selected={selectedSensorIndex}
@@ -117,7 +153,7 @@ class App extends Component {
             <br />
             <small>The unit of the sensor area is <i>mm²</i></small>
           </footer>
-        </section>
+        </Card>
 
         <footer className="card">
           <span>created by Roman Kollatschny, 2018</span>
