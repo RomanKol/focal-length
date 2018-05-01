@@ -24,18 +24,6 @@ const Card = styled.section`
   }
 `;
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: column;
-  @media (min-width: 480px) {
-    flex-direction: row;
-    > * {
-      flex-basis: 0;
-      flex-grow: 1;
-    }
-  }
-`;
-
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -95,7 +83,7 @@ class App extends Component {
         <Card>
           <h3>Focal length and sensor/frame size</h3>
 
-          <Row>
+          <Column>
             <Column>
               <RangeInput
                 title="Input Focal length"
@@ -122,7 +110,7 @@ class App extends Component {
                 {JSON.stringify(selectedSensor, null, 2)}
               </pre>
             </Column>
-          </Row>
+          </Column>
 
         </Card>
 

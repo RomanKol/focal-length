@@ -1,32 +1,60 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'react-emotion';
 
-const RangeInput = props => (
-  <label htmlFor={props.title}>
-    {props.title}
-    <input
+import Slider from 'rc-slider/lib/Slider';
+import 'rc-slider/assets/index.css';
+
+// 'Fix' the rc-slider labels
+const SliderWrapper = styled.div`
+  margin-bottom: 1em;
+  padding: 1em 0;
+  & span.rc-slider-mark-text {
+    transform: rotate(90deg);
+    top: 10px;
+    text-align: left;
+    width: auto !important;
+    margin-left: -2.6% !important;
+  }
+`;
+
+const RangeInput = (props) => {
+  const { title, onClickHandler, ...others } = props;
+  return (
+    <label htmlFor={title}>
+      {title}
+
+      <SliderWrapper onClick={onClickHandler}>
+        <Slider {...others} included={false} />
+      </SliderWrapper>
+
+      {/* <input
       type="range"
-      id={props.title}
-      name={props.title}
+      id={title}
+      name={title}
       {...props}
-    />
-  </label>
-);
+    /> */}
+    </label>
+  );
+};
 
 RangeInput.propTypes = {
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.number,
+  onClickHandler: PropTypes.func.isRequired,
+  defaultValue: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
   steps: PropTypes.number,
+  marks: PropTypes.objectOf(PropTypes.string),
 };
 
 RangeInput.defaultProps = {
   min: 0,
   max: 800,
   steps: 1,
-  value: 35,
+  defaultValue: 35,
+  marks: [16, 24, 35, 50, 70, 100, 200, 400, 600, 800].reduce((obj, num) => ({ ...obj, [num]: `${num}mm` }), {}),
 };
 
 export default RangeInput;
