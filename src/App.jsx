@@ -6,7 +6,7 @@ import SensorTable from './components/table';
 import FovCanvas from './components/fovCanvas';
 import SensorSelect from './components/sensorSelect';
 
-const Card = styled('section')`
+const Card = styled.section`
   padding: 1rem;
   background-color: #fff;
   box-shadow: 0 2px 3px rgba(140, 140, 140, 0.5), 0 0 1px rgba(0, 0, 0, .14);
@@ -24,7 +24,7 @@ const Card = styled('section')`
   }
 `;
 
-const Row = styled('div')`
+const Row = styled.div`
   display: flex;
   flex-direction: column;
   @media (min-width: 480px) {
@@ -36,7 +36,7 @@ const Row = styled('div')`
   }
 `;
 
-const Column = styled('div')`
+const Column = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -59,11 +59,7 @@ class App extends Component {
     };
   }
 
-  updateFocalLength = (e) => {
-    this.setState({
-      focalLength: parseFloat(e.target.value),
-    });
-  };
+  updateFocalLength = value => this.setState({ focalLength: value });
 
   updateSelectedSensor = (e) => {
     this.setState({

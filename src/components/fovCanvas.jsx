@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 
-const StyledCanvas = styled('canvas')`
+const StyledCanvas = styled.canvas`
   width: 100%;
 `;
 

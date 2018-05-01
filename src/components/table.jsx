@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 
-const Table = styled('table')`
+const Table = styled.table`
   width: 100%;
   max-width: 100%;
   margin-bottom: 1.25rem;
   border-collapse: collapse;
 `;
 
-const Thead = styled('thead')`
+const Thead = styled.thead`
   th {
     border-bottom: 2px solid rgba(0, 0, 0, 0.12);
     font-weight: 700;
@@ -17,17 +17,17 @@ const Thead = styled('thead')`
   }
 `;
 
-const Th = styled('th')`
+const Th = styled.th`
   padding: 10px;
   line-height: 1.5;
 `;
 /* eslint-disable no-confusing-arrow */
-const Tr = styled('tr')`
+const Tr = styled.tr`
   ${props => props.selected ? 'background-color: #eee;' : ''}
 `;
 /* eslint-enable no-confusing-arrow */
 
-const Td = styled('td')`
+const Td = styled.td`
   padding: 10px;
   line-height: 1.5;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
