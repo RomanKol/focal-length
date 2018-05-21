@@ -1,28 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
 
+import Card from './Cards/card';
 import RangeInput from './components/rangeInput';
 import SensorTable from './components/table';
 import FovCanvas from './components/fovCanvas';
-import SensorSelect from './components/sensorSelect';
 
-const Card = styled.section`
-  padding: 1rem;
-  background-color: #fff;
-  box-shadow: 0 2px 3px rgba(140, 140, 140, 0.5), 0 0 1px rgba(0, 0, 0, .14);
-  border-radius: 2px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  :first-child {
-    margin-top: 1rem;
-  }
-  > *:first-child {
-    margin-top: 0;
-  }
-  > *:last-child {
-    margin-bottom: 0;
-  }
-`;
+import Sensor from './Cards/Sensor';
 
 const Column = styled.div`
   display: flex;
@@ -41,6 +25,8 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.fullFrame = SENSORS.find(sensor => sensor.crop === 1);
+
     this.state = {
       focalLength: 24,
       selectedSensorIndex: SENSORS.findIndex(sensor => sensor.crop === 1) || 0,
@@ -54,6 +40,14 @@ class App extends Component {
       selectedSensorIndex: parseInt(e.target.selectedIndex, 10),
     });
   };
+
+  renderUnitInfo = () => (
+    <footer>
+      <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
+      <br />
+      <small>The unit of the sensor area is <i>mm²</i></small>
+    </footer>
+  )
 
   render() {
     const tableHeader = {
@@ -80,8 +74,17 @@ class App extends Component {
           <p>Compare different focal lengths on various sensors</p>
         </Card>
 
+        <Sensor
+          title="Sensor/frame size"
+          sensors={SENSORS}
+          selectedSensor={selectedSensor}
+          selectedSensorIndex={selectedSensorIndex}
+          updateSelectedSensor={this.updateSelectedSensor}
+          fullFrameSensor={this.fullFrame}
+        />
+
         <Card>
-          <h3>Focal length and sensor/frame size</h3>
+          <h3>Field of view</h3>
 
           <Column>
             <Column>
@@ -100,28 +103,13 @@ class App extends Component {
               </p>
             </Column>
 
-            <Column>
-              <SensorSelect
-                sensors={SENSORS}
-                selectedIndex={selectedSensorIndex}
-                onChange={this.updateSelectedSensor}
-              />
-              <pre>
-                {JSON.stringify(selectedSensor, null, 2)}
-              </pre>
-            </Column>
+            <FovCanvas
+              width={500}
+              height={250}
+              focalLength={focalLength}
+              crop={crop}
+            />
           </Column>
-
-        </Card>
-
-        <Card>
-          <h3>Field of view</h3>
-          <FovCanvas
-            width={500}
-            height={250}
-            focalLength={focalLength}
-            crop={crop}
-          />
         </Card>
 
         <Card>
@@ -132,18 +120,14 @@ class App extends Component {
             selected={selectedSensorIndex}
             sorting="name"
           />
-          <footer>
-            <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
-            <br />
-            <small>The unit of the sensor area is <i>mm²</i></small>
-          </footer>
+          {this.renderUnitInfo()}
         </Card>
 
         <footer className="card">
           <span>created by Roman Kollatschny, 2018</span>
         </footer>
 
-      </main>
+      </main >
     );
   }
 }
