@@ -42,8 +42,8 @@ module.exports = [
   {
     name: '2/3″',
     diagonal: 11.00,
-    width: '8.80',
-    height: '6.60',
+    width: 8.80,
+    height: 6.60,
     area: 58.10,
     crop: 3.93,
   },
