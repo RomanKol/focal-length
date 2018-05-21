@@ -19,12 +19,12 @@ const SliderWrapper = styled.div`
 `;
 
 const RangeInput = (props) => {
-  const { title, onClickHandler, ...others } = props;
+  const { title, ...others } = props;
   return (
     <label htmlFor={title}>
       {title}
 
-      <SliderWrapper onClick={onClickHandler}>
+      <SliderWrapper>
         <Slider {...others} included={false} />
       </SliderWrapper>
 
@@ -41,7 +41,6 @@ const RangeInput = (props) => {
 RangeInput.propTypes = {
   title: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  onClickHandler: PropTypes.func.isRequired,
   defaultValue: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
