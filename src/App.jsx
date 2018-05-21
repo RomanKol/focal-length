@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
 
 import Card from './Cards/card';
-import RangeInput from './components/rangeInput';
 import SensorTable from './components/table';
-import FovCanvas from './components/fovCanvas';
 
 import Sensor from './Cards/Sensor';
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+import FieldOfView from './Cards/FieldOfView';
 
 // sort sensors for their crop factor ascending
 const SENSORS = require('./sensor-formats')
@@ -40,14 +33,6 @@ class App extends Component {
       selectedSensorIndex: parseInt(e.target.selectedIndex, 10),
     });
   };
-
-  renderUnitInfo = () => (
-    <footer>
-      <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
-      <br />
-      <small>The unit of the sensor area is <i>mm²</i></small>
-    </footer>
-  )
 
   render() {
     const tableHeader = {
@@ -83,34 +68,12 @@ class App extends Component {
           fullFrameSensor={this.fullFrame}
         />
 
-        <Card>
-          <h3>Field of view</h3>
-
-          <Column>
-            <Column>
-              <RangeInput
-                title="Input Focal length"
-                value={focalLength}
-                max={800}
-                onChange={this.updateFocalLength}
-              />
-              <p>
-                <span>Current focal length: </span>
-                <b>{focalLength}mm</b>
-                <br />
-                <span>Focal length on selected crop: </span>
-                <b>{Math.round(focalLength * crop)}mm</b>
-              </p>
-            </Column>
-
-            <FovCanvas
-              width={500}
-              height={250}
-              focalLength={focalLength}
-              crop={crop}
-            />
-          </Column>
-        </Card>
+        <FieldOfView
+          title="Field of view"
+          focalLength={focalLength}
+          crop={crop}
+          updateFocalLength={this.updateFocalLength}
+        />
 
         <Card>
           <h3>Sensors</h3>
@@ -120,7 +83,11 @@ class App extends Component {
             selected={selectedSensorIndex}
             sorting="name"
           />
-          {this.renderUnitInfo()}
+          <footer>
+            <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
+            <br />
+            <small>The unit of the sensor area is <i>mm²</i></small>
+          </footer>
         </Card>
 
         <footer className="card">
