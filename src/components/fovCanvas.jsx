@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import Dimensions from 'react-dimensions';
 
 const StyledCanvas = styled.canvas`
   width: 100%;
@@ -11,8 +12,10 @@ class FovCanvas extends Component {
     super(props);
 
     this.state = {
-      radius: Math.min(props.width, props.height),
+      width: Math.floor(props.containerWidth * window.devicePixelRatio),
+      height: Math.floor(props.containerWidth * (props.aspect ** -1) * window.devicePixelRatio),
     };
+    this.state.radius = Math.min(this.state.width, this.state.height);
   }
 
   componentDidMount() {
@@ -48,9 +51,8 @@ class FovCanvas extends Component {
    * Update the canvas
    */
   updateCanvas() {
-    const {
-      width, height, focalLength, crop,
-    } = this.props;
+    const { width, height } = this.state;
+    const { focalLength, crop } = this.props;
     const { radius } = this.state;
 
     const ctx = this.canvas.getContext('2d');
@@ -66,7 +68,8 @@ class FovCanvas extends Component {
   }
 
   render() {
-    const { width, height } = this.props;
+    const { width, height } = this.state;
+
     return (
       <StyledCanvas
         innerRef={(canvas) => { this.canvas = canvas; }}
@@ -78,17 +81,16 @@ class FovCanvas extends Component {
 }
 
 FovCanvas.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
+  containerWidth: PropTypes.number.isRequired,
   focalLength: PropTypes.number,
   crop: PropTypes.number,
+  aspect: PropTypes.number,
 };
 
 FovCanvas.defaultProps = {
-  width: 800,
-  height: 400,
+  aspect: 2 / 1,
   focalLength: 0,
   crop: 1,
 };
 
-export default FovCanvas;
+export default Dimensions()(FovCanvas);

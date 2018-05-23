@@ -35,8 +35,7 @@ const Sensor = (props) => {
         </section>
 
         <FovCanvas
-          width={500}
-          height={250}
+          aspect={2 / 1}
           focalLength={focalLength}
           crop={crop}
         />
