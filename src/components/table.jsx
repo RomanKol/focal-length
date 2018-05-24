@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import { observer } from 'mobx-react';
+
+import store from '../store';
 
 export const Table = styled.table`
   width: 100%;
@@ -36,8 +39,9 @@ export const Td = styled.td`
   }
 `;
 
-const SensorTable = ({ header, data, selected }) => {
+const SensorTable = observer(({ header }) => {
   const keys = Object.keys(header);
+  const { sensors, selectedSensorIndex } = store;
 
   return (
     <Table>
@@ -47,24 +51,18 @@ const SensorTable = ({ header, data, selected }) => {
         </Tr>
       </Thead>
       <tbody>
-        {data.map((item, i) => (
-          <Tr key={item.name} selected={i === selected}>
+        {sensors.map((item, i) => (
+          <Tr key={item.name} selected={i === selectedSensorIndex}>
             {keys.map(key => <Td key={`${item.name}-${key}`}> {item[key]} </Td>)}
           </Tr>
         ))}
       </tbody>
     </Table>
   );
-};
+});
 
 SensorTable.propTypes = {
   header: PropTypes.objectOf(PropTypes.string).isRequired,
-  data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selected: PropTypes.number,
-};
-
-SensorTable.defaultProps = {
-  selected: null,
 };
 
 export default SensorTable;

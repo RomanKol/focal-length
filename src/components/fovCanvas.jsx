@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Dimensions from 'react-dimensions';
+import { observer } from 'mobx-react';
+
+import store from '../store';
 
 const StyledCanvas = styled.canvas`
   width: 100%;
 `;
 
-class FovCanvas extends Component {
+@observer class FovCanvas extends Component {
   constructor(props) {
     super(props);
 
@@ -32,9 +35,9 @@ class FovCanvas extends Component {
    * @param {number} crop - the crop factor
    * @return {number} - the field of view in radians
    */
-  calculateFieldOfView = (focalLength, crop) => {
+  calculateFieldOfView = () => {
     const diagonal = Math.sqrt((24 ** 2) + (36 ** 2));
-    const radian = (2 * Math.atan((diagonal) / (2 * focalLength * crop)));
+    const radian = (2 * Math.atan((diagonal) / (2 * store.focalLength * store.crop)));
     return radian;
   };
 
@@ -52,11 +55,10 @@ class FovCanvas extends Component {
    */
   updateCanvas() {
     const { width, height } = this.state;
-    const { focalLength, crop } = this.props;
     const { radius } = this.state;
 
     const ctx = this.canvas.getContext('2d');
-    const fov = this.calculateFieldOfView(focalLength, crop);
+    const fov = this.calculateFieldOfView();
     // const angle = (fov / 2) - (Math.PI / 2);
 
     ctx.clearRect(0, 0, width, height);
@@ -82,15 +84,11 @@ class FovCanvas extends Component {
 
 FovCanvas.propTypes = {
   containerWidth: PropTypes.number.isRequired,
-  focalLength: PropTypes.number,
-  crop: PropTypes.number,
   aspect: PropTypes.number,
 };
 
 FovCanvas.defaultProps = {
   aspect: 2 / 1,
-  focalLength: 0,
-  crop: 1,
 };
 
 export default Dimensions()(FovCanvas);

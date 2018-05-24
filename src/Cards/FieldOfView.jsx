@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 
 import Card from './card';
 import RangeInput from '../components/rangeInput';
 import FovCanvas from '../components/fovCanvas';
 
-const Sensor = (props) => {
-  const {
-    title,
-    focalLength,
-    crop,
-    updateFocalLength,
-  } = props;
+import store from '../store';
+
+const Sensor = observer(({ title }) => {
+  const { focalLength, crop } = store;
 
   return (
     <Card>
@@ -23,7 +21,6 @@ const Sensor = (props) => {
             title="Input Focal length"
             value={focalLength}
             max={800}
-            onChange={updateFocalLength}
           />
           <p>
             <span>Current focal length: </span>
@@ -34,21 +31,14 @@ const Sensor = (props) => {
           </p>
         </section>
 
-        <FovCanvas
-          aspect={2 / 1}
-          focalLength={focalLength}
-          crop={crop}
-        />
+        <FovCanvas aspect={2 / 1} />
       </section>
     </Card>
   );
-};
+});
 
 Sensor.propTypes = {
   title: PropTypes.string.isRequired,
-  focalLength: PropTypes.number.isRequired,
-  crop: PropTypes.number.isRequired,
-  updateFocalLength: PropTypes.func.isRequired,
 };
 
 export default Sensor;

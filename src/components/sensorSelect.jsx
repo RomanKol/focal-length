@@ -1,33 +1,19 @@
 import React from 'react';
-import PropTyes from 'prop-types';
+import { observer } from 'mobx-react';
 
-const SensorSelect = ({ sensors, selectedIndex, onChange }) => (
+import store from '../store';
+
+const SensorSelect = observer(() => (
   <select
-    defaultValue={selectedIndex}
-    onChange={onChange}
+    defaultValue={store.selectedSensorIndex}
+    onChange={(e) => { store.selectedSensorIndex = parseInt(e.target.value, 10); }}
   >
-    {
-      sensors.map((sensor, i) => (
-        <option
-          key={sensor.name}
-          value={i}
-        >
-          {sensor.name} - [{sensor.crop}]
-        </option>
-      ))
-    }
+    {store.sensors.map((sensor, i) => (
+      <option key={sensor.name} value={i} >
+        {sensor.name} - [{sensor.crop}]
+      </option>
+    ))}
   </select>
-);
-
-SensorSelect.propTypes = {
-  sensors: PropTyes.arrayOf(PropTyes.object),
-  onChange: PropTyes.func.isRequired,
-  selectedIndex: PropTyes.number,
-};
-
-SensorSelect.defaultProps = {
-  sensors: [],
-  selectedIndex: 1,
-};
+));
 
 export default SensorSelect;

@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
+
+import store from '../store';
 
 import Card from './card';
 import { Table, Thead, Td } from '../components/table';
 import SensorSelect from '../components/sensorSelect';
 
-const Sensor = (props) => {
+const Sensor = observer(({ title }) => {
   const {
-    title,
-    sensors,
-    selectedSensorIndex,
-    updateSelectedSensor,
     selectedSensor,
     fullFrameSensor,
-  } = props;
+  } = store;
 
   const comparison = selectedSensor.name !== fullFrameSensor.name;
 
@@ -23,11 +22,7 @@ const Sensor = (props) => {
 
       <section>
         <section>
-          <SensorSelect
-            sensors={sensors}
-            selectedIndex={selectedSensorIndex}
-            onChange={updateSelectedSensor}
-          />
+          <SensorSelect />
           <Table>
             <Thead>
               <tr>
@@ -56,24 +51,10 @@ const Sensor = (props) => {
       </section>
     </Card>
   );
-};
-
-const sensor = PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  diagonal: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  area: PropTypes.number.isRequired,
-  crop: PropTypes.number.isRequired,
 });
 
 Sensor.propTypes = {
   title: PropTypes.string.isRequired,
-  sensors: PropTypes.arrayOf(sensor).isRequired,
-  selectedSensorIndex: PropTypes.number.isRequired,
-  updateSelectedSensor: PropTypes.func.isRequired,
-  selectedSensor: sensor.isRequired,
-  fullFrameSensor: sensor.isRequired,
 };
 
 export default Sensor;

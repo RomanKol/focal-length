@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import { observer } from 'mobx-react';
 
 import Slider from 'rc-slider/lib/Slider';
 import 'rc-slider/assets/index.css';
+import store from '../store';
 
 // 'Fix' the rc-slider labels
 const SliderWrapper = styled.div`
@@ -18,29 +20,22 @@ const SliderWrapper = styled.div`
   }
 `;
 
-const RangeInput = (props) => {
-  const { title, ...others } = props;
-  return (
-    <label htmlFor={title}>
-      {title}
+const RangeInput = observer(({ title, ...others }) => (
+  <label htmlFor={title}>
+    {title}
 
-      <SliderWrapper>
-        <Slider {...others} included={false} />
-      </SliderWrapper>
-
-      {/* <input
-      type="range"
-      id={title}
-      name={title}
-      {...props}
-    /> */}
-    </label>
-  );
-};
+    <SliderWrapper>
+      <Slider
+        {...others}
+        included={false}
+        onChange={(value) => { store.focalLength = value; }}
+      />
+    </SliderWrapper>
+  </label>
+));
 
 RangeInput.propTypes = {
   title: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
   defaultValue: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
