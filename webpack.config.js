@@ -33,6 +33,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
+  devtool: 'source-map',
   devServer: {
     contentBase: './dist',
     hot: true,
