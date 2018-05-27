@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import Dimensions from 'react-dimensions';
 import { observer } from 'mobx-react';
+import { observable, autorun } from 'mobx';
+
+import Dimensions from 'react-dimensions';
 
 import store from '../store';
 
@@ -11,14 +13,19 @@ const StyledCanvas = styled.canvas`
 `;
 
 @observer class FovCanvas extends Component {
+  @observable width = 0;
+  @observable height = 0;
+  @observable radius = 0;
+
   constructor(props) {
     super(props);
+    this.width = Math.floor(props.containerWidth * window.devicePixelRatio);
+    this.height = Math.floor(props.containerWidth * (props.aspect ** -1) * window.devicePixelRatio);
+    this.radius = Math.min(this.width, this.height);
 
-    this.state = {
-      width: Math.floor(props.containerWidth * window.devicePixelRatio),
-      height: Math.floor(props.containerWidth * (props.aspect ** -1) * window.devicePixelRatio),
-    };
-    this.state.radius = Math.min(this.state.width, this.state.height);
+    autorun(() => {
+      if (store.selectedSensors.length || store.focalLength) this.updateCanvas();
+    }, { delay: 16.67 });
   }
 
   componentDidMount() {
@@ -35,9 +42,9 @@ const StyledCanvas = styled.canvas`
    * @param {number} crop - the crop factor
    * @return {number} - the field of view in radians
    */
-  calculateFieldOfView = () => {
+  calculateFieldOfView = (crop) => {
     const diagonal = Math.sqrt((24 ** 2) + (36 ** 2));
-    const radian = (2 * Math.atan((diagonal) / (2 * store.focalLength * store.crop)));
+    const radian = (2 * Math.atan((diagonal) / (2 * store.focalLength * crop)));
     return radian;
   };
 
@@ -48,35 +55,38 @@ const StyledCanvas = styled.canvas`
    * @param {number} fov - the field of view in radians
    * @return {number} - the rotated start/end angle
    */
-  calculateAngle = fov => (fov / 2) - (Math.PI / 2);
+  calcAngle = fov => (fov / 2) - (Math.PI / 2);
 
   /**
    * Update the canvas
    */
   updateCanvas() {
-    const { width, height } = this.state;
-    const { radius } = this.state;
-
+    const { width, height } = this;
     const ctx = this.canvas.getContext('2d');
-    const fov = this.calculateFieldOfView();
-    // const angle = (fov / 2) - (Math.PI / 2);
+
+    const count = store.sensors.length;
 
     ctx.clearRect(0, 0, width, height);
-    ctx.beginPath();
-    ctx.moveTo(width / 2, height);
-    ctx.arc(width / 2, height, radius, this.calculateAngle(-fov), this.calculateAngle(fov), false);
-    ctx.fillStyle = '#ccc';
-    ctx.fill();
+
+    store.selectedSensors.forEach((sensor, i) => {
+      const fov = this.calculateFieldOfView(sensor.crop);
+      const radius = (this.radius / count) * (count - i);
+      ctx.fillStyle = `hsl(${Math.round(360 / (count / store.selectedSensorIndices[i]))}, 60%, 60%)`;
+
+      ctx.beginPath();
+      ctx.moveTo(width / 2, height);
+      ctx.arc(width / 2, height, radius, this.calcAngle(-fov), this.calcAngle(fov), false);
+      ctx.closePath();
+      ctx.fill();
+    });
   }
 
   render() {
-    const { width, height } = this.state;
-
     return (
       <StyledCanvas
         innerRef={(canvas) => { this.canvas = canvas; }}
-        width={width}
-        height={height}
+        width={this.width}
+        height={this.height}
       />
     );
   }

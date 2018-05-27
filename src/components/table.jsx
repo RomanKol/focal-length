@@ -41,7 +41,7 @@ export const Td = styled.td`
 
 const SensorTable = observer(({ header }) => {
   const keys = Object.keys(header);
-  const { sensors, selectedSensorIndex } = store;
+  const { sensors, selectedSensorIndices } = store;
 
   return (
     <Table>
@@ -52,7 +52,7 @@ const SensorTable = observer(({ header }) => {
       </Thead>
       <tbody>
         {sensors.map((item, i) => (
-          <Tr key={item.name} selected={i === selectedSensorIndex}>
+          <Tr key={item.name} selected={selectedSensorIndices.includes(i)}>
             {keys.map(key => <Td key={`${item.name}-${key}`}> {item[key]} </Td>)}
           </Tr>
         ))}
