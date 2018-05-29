@@ -1,12 +1,6 @@
 import { observable, computed, autorun } from 'mobx';
-
+import SENSORS from './sensor-formats';
 // sort sensors for their crop factor ascending
-const SENSORS = require('./sensor-formats')
-  .sort((a, b) => {
-    if (a.crop > b.crop) return -1;
-    if (a.crop < b.crop) return 1;
-    return 0;
-  });
 
 class Store {
   constructor() {
