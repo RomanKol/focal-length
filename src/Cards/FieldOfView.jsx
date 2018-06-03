@@ -9,8 +9,6 @@ import FovCanvas from '../components/fovCanvas';
 
 import store from '../store';
 
-const color = index => `hsl(${Math.round(360 / (store.sensors.length / index))}, 60%, 60%)`;
-
 const List = styled.ul`
   margin: 0 0 1em 0;
   padding: 0;
@@ -21,17 +19,18 @@ const List = styled.ul`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-right: 1em;
+    flex: 1 1 50%;
     div {
       margin-right: .5em;
     }
   }
 `;
 
-const ColorRect = styled.div`
+const ColorCircle = styled.div`
   width: 1em;
   height: 1em;
-  background-color: ${props => color(props.color)};
+  background-color: ${props => store.selectedSensorColors[props.index]};
+  border-radius: 50%;
 `;
 
 const Sensor = observer(({ title }) => {
@@ -39,32 +38,37 @@ const Sensor = observer(({ title }) => {
 
   return (
     <Card>
-      <h3>{title}</h3>
+      <header>
+        <h3>{title}</h3>
+      </header>
 
       <section>
-        <section>
-          <RangeInput
-            title="Input Focal length"
-            value={focalLength}
-            max={800}
-          />
-          <p>
-            <span>Current focal length: </span>
-            <b>{focalLength}mm</b>
-            <br />
-            <span>Focal length on selected sensor: </span>
-          </p>
-          <List>
-            {selectedSensors
-              .map((sensor, i) => (
-                <li key={sensor.name}>
-                  <ColorRect color={store.selectedSensorIndices[i]} />
-                  {sensor.name}: {Math.round(focalLength * sensor.crop)}mm
-                </li>
-              ))
-            }
-          </List>
-        </section>
+        <RangeInput
+          title="Input Focal length"
+          value={focalLength}
+          max={800}
+        />
+
+        <p>
+          <span>Current focal length: </span>
+          <strong>{focalLength}mm</strong>
+        </p>
+      </section>
+
+      <section>
+        <p>Selected sensors:</p>
+
+        <List>
+          {selectedSensors
+            .map((sensor, i) => (
+              <li key={sensor.name}>
+                <ColorCircle index={i} />
+                <span>{sensor.name}: </span>
+                <strong>{Math.round(focalLength * sensor.crop)}mm</strong>
+              </li>
+            ))
+          }
+        </List>
 
         <FovCanvas aspect={2 / 1} />
       </section>

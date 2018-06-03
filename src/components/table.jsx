@@ -8,7 +8,7 @@ import store from '../store';
 export const Table = styled.table`
   width: 100%;
   max-width: 100%;
-  margin-bottom: 1.25rem;
+  margin-bottom: .5rem;
   border-collapse: collapse;
 `;
 
@@ -40,7 +40,7 @@ export const Td = styled.td`
 `;
 
 const SensorTable = observer(({ header }) => {
-  const keys = Object.keys(header);
+  const keys = Object.keys(header).filter(key => !key.startsWith('_'));
   const { sensors, selectedSensorIndices } = store;
 
   return (

@@ -13,10 +13,6 @@ const StyledCanvas = styled.canvas`
 `;
 
 @observer class FovCanvas extends Component {
-  @observable width = 0;
-  @observable height = 0;
-  @observable radius = 0;
-
   constructor(props) {
     super(props);
     this.width = Math.floor(props.containerWidth * window.devicePixelRatio);
@@ -37,13 +33,16 @@ const StyledCanvas = styled.canvas`
     this.updateCanvas();
   }
 
+  @observable width = 0;
+  @observable height = 0;
+  @observable radius = 0;
+
   /**
-   * Calcualtes the field of view angle of an focal length of a sensor
-   * @param {number} crop - the crop factor
+   * Calcualtes the field of view angle of a sensor for a given focal length
+   * @param {number} diagonal - the diagonal of the sensor
    * @return {number} - the field of view in radians
    */
-  calculateFieldOfView = (sensor) => {
-    const diagonal = Math.sqrt((sensor.height ** 2) + (sensor.width ** 2));
+  calculateFieldOfView = (diagonal) => {
     const radian = (2 * Math.atan((diagonal) / (2 * store.focalLength)));
     // the degree value would be calculated as followed: const degree = radian * 180) / Math.PI;
     return radian;
@@ -65,15 +64,16 @@ const StyledCanvas = styled.canvas`
     const { width, height } = this;
     const ctx = this.canvas.getContext('2d');
 
+    const { selectedSensors, selectedSensorColors } = store;
     const count = store.sensors.length;
 
     ctx.clearRect(0, 0, width, height);
 
-    store.selectedSensors.forEach((sensor, i) => {
+    selectedSensors.forEach((sensor, i) => {
       // draw the field of view arc
-      const fov = this.calculateFieldOfView(sensor);
+      const fov = this.calculateFieldOfView(sensor.diagonal);
       const radius = (this.radius / count) * (count - i);
-      ctx.fillStyle = `hsl(${Math.round(360 / (count / store.selectedSensorIndices[i]))}, 60%, 60%)`;
+      ctx.fillStyle = selectedSensorColors[i];
 
       ctx.beginPath();
       ctx.moveTo(width / 2, height);
@@ -119,12 +119,12 @@ const StyledCanvas = styled.canvas`
 }
 
 FovCanvas.propTypes = {
-  containerWidth: PropTypes.number.isRequired,
   aspect: PropTypes.number,
+  containerWidth: PropTypes.number.isRequired,
 };
 
 FovCanvas.defaultProps = {
-  aspect: 2 / 1,
+  aspect: 3 / 2,
 };
 
 export default Dimensions()(FovCanvas);

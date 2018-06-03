@@ -7,11 +7,10 @@ const Card = styled.section`
   border-radius: 2px;
   margin-bottom: 1rem;
   overflow: hidden;
-  :first-child {
-    margin-top: 1rem;
-  }
-  > *:first-child {
-    margin-top: 0;
+  header {
+    > :first-child {
+      margin-top: 0 ;
+    }
   }
   > *:last-child {
     margin-bottom: 0;
@@ -19,6 +18,9 @@ const Card = styled.section`
   section {
     display: flex;
     flex-direction: column;
+    ~ section {
+      margin-top: 1rem;
+    }
   }
 `;
 
