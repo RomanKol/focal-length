@@ -3,5 +3,9 @@
     "browser": true
   },
   "extends": "airbnb",
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "rules": {
+    "react/jsx-one-expression-per-line": 0,
+    "lines-between-class-members": 0
+  }
 }
