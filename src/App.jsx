@@ -36,14 +36,18 @@ const App = () => {
             header={tableHeader}
             sorting="name"
             body={store.sensors}
-            selected={store.selectedSensorIndices.toJS()}
+            selected={store.selectedSensorIndices}
             mapKey="name"
           />
         </TableWrapper>
         <footer>
-          <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
+          <small>
+            The units fo the sensor diagonal, width and height are <i>mm</i>
+          </small>
           <br />
-          <small>The unit of the sensor area is <i>mm²</i></small>
+          <small>
+            The unit of the sensor area is <i>mm²</i>
+          </small>
         </footer>
       </Card>
 
@@ -51,7 +55,7 @@ const App = () => {
         <span>created by Roman Kollatschny, 2018</span>
       </footer>
 
-    </main >
+    </main>
   );
 };
 

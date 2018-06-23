@@ -13,6 +13,10 @@ const StyledCanvas = styled.canvas`
 `;
 
 @observer class FovCanvas extends Component {
+  @observable width = 0;
+  @observable height = 0;
+  @observable radius = 0;
+
   constructor(props) {
     super(props);
     this.width = Math.floor(props.containerWidth * window.devicePixelRatio);
@@ -33,9 +37,6 @@ const StyledCanvas = styled.canvas`
     this.updateCanvas();
   }
 
-  @observable width = 0;
-  @observable height = 0;
-  @observable radius = 0;
 
   /**
    * Calcualtes the field of view angle of a sensor for a given focal length

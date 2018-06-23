@@ -11,7 +11,7 @@ const SensorSelect = observer(() => {
 
   return (
     <select
-      defaultValue={store.selectedSensorIndices.toJS()}
+      defaultValue={store.selectedSensorIndices}
       onChange={onChangeHandler}
       size={5}
       multiple

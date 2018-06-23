@@ -6,14 +6,16 @@ import styled from 'react-emotion';
 import store from '../store';
 
 import Card from './card';
-import { TableWrapper, Table, Thead, Td } from '../components/table';
+import {
+  TableWrapper, Table, Thead, Td,
+} from '../components/table';
 import SensorSelect from '../components/sensorSelect';
 import SensorSize from '../components/sensorSize';
 
 const ColorCircle = styled.div`
   width: 1em;
   height: 1em;
-  background-color: ${props => props.color};
+  background-color: ${({ color }) => color};
   border-radius: 50%;
   margin: 0 0 0 auto;
 `;

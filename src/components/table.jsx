@@ -29,7 +29,7 @@ export const Th = styled.th`
 `;
 /* eslint-disable no-confusing-arrow */
 export const Tr = styled.tr`
-  ${props => props.selected ? 'background-color: #eee;' : ''}
+  ${({ selected }) => selected ? 'background-color: #eee;' : ''}
 `;
 /* eslint-enable no-confusing-arrow */
 
@@ -44,19 +44,22 @@ export const Td = styled.td`
 `;
 
 const SimpleTable = observer((props) => {
-  const keys = Object.keys(props.header).filter(key => !key.startsWith('_'));
+  const {
+    header, body, mapKey, selected,
+  } = props;
+  const keys = Object.keys(header).filter(key => !key.startsWith('_'));
 
   return (
     <Table>
       <Thead>
         <Tr>
-          {keys.map(key => <Th key={key}>{props.header[key]}</Th>)}
+          {keys.map(key => <Th key={key}>{header[key]}</Th>)}
         </Tr>
       </Thead>
       <tbody>
-        {props.body.map((item, i) => (
-          <Tr key={item[props.mapKey]} selected={props.selected.includes(i)}>
-            {keys.map(key => <Td key={`${item[props.mapKey]}-${key}`}> {item[key]} </Td>)}
+        {body.map((item, i) => (
+          <Tr key={item[mapKey]} selected={selected.includes(i)}>
+            {keys.map(key => <Td key={`${item[mapKey]}-${key}`}> {item[key]} </Td>)}
           </Tr>
         ))}
       </tbody>

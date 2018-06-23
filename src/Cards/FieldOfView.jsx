@@ -29,7 +29,7 @@ const List = styled.ul`
 const ColorCircle = styled.div`
   width: 1em;
   height: 1em;
-  background-color: ${props => store.selectedSensorColors[props.index]};
+  background-color: ${({ index }) => store.selectedSensorColors[index]};
   border-radius: 50%;
 `;
 
