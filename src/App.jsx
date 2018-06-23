@@ -1,9 +1,12 @@
 import React from 'react';
 
+import store from './store';
+
 import Sensor from './Cards/Sensor';
 import FieldOfView from './Cards/FieldOfView';
 import Card from './Cards/card';
-import SensorTable from './components/table';
+import SimpleTable, { TableWrapper } from './components/table';
+
 
 const App = () => {
   const tableHeader = {
@@ -28,10 +31,15 @@ const App = () => {
 
       <Card>
         <h3>Sensors</h3>
-        <SensorTable
-          header={tableHeader}
-          sorting="name"
-        />
+        <TableWrapper>
+          <SimpleTable
+            header={tableHeader}
+            sorting="name"
+            body={store.sensors}
+            selected={store.selectedSensorIndices.toJS()}
+            mapKey="name"
+          />
+        </TableWrapper>
         <footer>
           <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
           <br />

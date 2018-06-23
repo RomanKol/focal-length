@@ -6,7 +6,7 @@ import styled from 'react-emotion';
 import store from '../store';
 
 import Card from './card';
-import { Table, Thead, Td } from '../components/table';
+import { TableWrapper, Table, Thead, Td } from '../components/table';
 import SensorSelect from '../components/sensorSelect';
 import SensorSize from '../components/sensorSize';
 
@@ -23,28 +23,32 @@ const Sensor = observer(({ title }) => {
 
   const SelectedSensorTable = () => (
     <React.Fragment>
-      <Table>
-        <Thead>
-          <tr>
-            <th />
-            {selectedSensors.map(sensor => <th key={sensor.name}>{sensor.name}</th>)}
-          </tr>
-        </Thead>
-
-        <tbody>
-          {Object.keys(selectedSensors[0]).filter(key => key !== 'name').map(key => (
-            <tr key={key}>
-              <Td><strong>{key}</strong></Td>
-              {selectedSensors.map(sensor => <Td key={sensor.name}>{sensor[key] || '-'}</Td>)}
+      <TableWrapper>
+        <Table>
+          <Thead>
+            <tr>
+              <th />
+              {selectedSensors.map(sensor => <th key={sensor.name}>{sensor.name}</th>)}
             </tr>
-          ))}
-          <tr>
-            <Td><strong>color</strong></Td>
-            {selectedSensorColors.map(color => <Td key={color}><ColorCircle color={color} /></Td>)}
-          </tr>
-        </tbody>
+          </Thead>
 
-      </Table>
+          <tbody>
+            {Object.keys(selectedSensors[0]).filter(key => key !== 'name').map(key => (
+              <tr key={key}>
+                <Td><strong>{key}</strong></Td>
+                {selectedSensors.map(sensor => <Td key={sensor.name}>{sensor[key] || '-'}</Td>)}
+              </tr>
+            ))}
+            <tr>
+              <Td><strong>color</strong></Td>
+              {selectedSensorColors
+                .map(color => <Td key={color}><ColorCircle color={color} /></Td>)
+              }
+            </tr>
+          </tbody>
+
+        </Table>
+      </TableWrapper>
 
       <footer>
         <small>
@@ -52,7 +56,6 @@ const Sensor = observer(({ title }) => {
           The unit of the sensor area is <i>mm²</i>.
         </small>
       </footer>
-
     </React.Fragment>
   );
 
