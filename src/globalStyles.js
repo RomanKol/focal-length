@@ -1,6 +1,6 @@
-import { injectGlobal } from 'emotion';
+import { css } from '@emotion/core';
 
-const globalStyles = injectGlobal`
+export default css`
   html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
@@ -69,8 +69,4 @@ const globalStyles = injectGlobal`
     width: 100%;
     overflow: auto;
   }
-
 `;
-
-
-export default globalStyles;

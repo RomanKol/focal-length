@@ -1,41 +1,71 @@
-const webpack = require('webpack');
+const path = require('path');
 
-module.exports = {
-  entry: [
-    'react-hot-loader/patch',
-    './index.js',
-  ],
-  output: {
-    path: `${__dirname}/dist`,
-    publicPath: '/',
-    filename: 'bundle.js',
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx'],
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader',
-        ],
-      },
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+module.exports = (_, { mode }) => {
+  const config = {
+    entry: [
+      './src/index.js',
     ],
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
-  devtool: 'source-map',
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
+    output: {
+      path: path.resolve(__dirname, './dist'),
+      filename: '[name].[hash].js',
+    },
+    devtool: mode === 'production' ? 'source-map' : 'inline-source-map',
+    resolve: {
+      extensions: ['*', '.js', '.jsx'],
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
+        },
+        {
+          test: /\.css$/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'postcss-loader',
+          ],
+        },
+      ],
+    },
+    plugins: [
+      new CleanWebpackPlugin({ verbose: false }),
+      new HtmlWebpackPlugin({
+        title: 'react-mobx-boilerplate',
+        template: path.resolve(__dirname, './index.html'),
+      }),
+    ],
+
+  };
+
+  if (mode === 'development') {
+    config.devServer = {
+      historyApiFallback: true,
+      noInfo: false,
+      port: 8080,
+      host: 'localhost',
+      disableHostCheck: true,
+    };
+  }
+
+  if (mode === 'production') {
+    config.optimization = {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      },
+    };
+  }
+
+  return config;
 };

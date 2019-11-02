@@ -33,9 +33,15 @@ const App = () => {
           sorting="name"
         />
         <footer>
-          <small>The units fo the sensor diagonal, width and height are <i>mm</i></small>
+          <small>
+The units fo the sensor diagonal, width and height are
+            <i>mm</i>
+          </small>
           <br />
-          <small>The unit of the sensor area is <i>mm²</i></small>
+          <small>
+The unit of the sensor area is
+            <i>mm²</i>
+          </small>
         </footer>
       </Card>
 
@@ -43,7 +49,7 @@ const App = () => {
         <span>created by Roman Kollatschny, 2018</span>
       </footer>
 
-    </main >
+    </main>
   );
 };
 

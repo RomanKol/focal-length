@@ -11,8 +11,8 @@ const SensorSize = observer(({ aspect, containerWidth: width }) => {
   const { selectedSensors, selectedSensorColors } = store;
 
   // calculate scaling, if sensor dimension is bigger than the the rect, scale down, else scale up
-  const maxWidth = Math.max(...selectedSensors.map(sensor => sensor.width));
-  const maxHeight = Math.max(...selectedSensors.map(sensor => sensor.height));
+  const maxWidth = Math.max(...selectedSensors.map((sensor) => sensor.width));
+  const maxHeight = Math.max(...selectedSensors.map((sensor) => sensor.height));
 
   // shift/translate the sensors to center them
   const scaling = Math.min(width / maxWidth, height / maxHeight);

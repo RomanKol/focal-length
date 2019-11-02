@@ -18,7 +18,11 @@ const SensorSelect = observer(() => {
     >
       {store.sensors.map((sensor, i) => (
         <option key={sensor.name} value={i}>
-          {sensor.name} - [{sensor.crop}]
+          {sensor.name}
+          {' '}
+- [
+          {sensor.crop}
+]
         </option>
       ))}
     </select>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import Card from './card';
 import RangeInput from '../components/rangeInput';
@@ -29,7 +29,7 @@ const List = styled.ul`
 const ColorCircle = styled.div`
   width: 1em;
   height: 1em;
-  background-color: ${props => store.selectedSensorColors[props.index]};
+  background-color: ${(props) => store.selectedSensorColors[props.index]};
   border-radius: 50%;
 `;
 
@@ -51,7 +51,10 @@ const Sensor = observer(({ title }) => {
 
         <p>
           <span>Current focal length: </span>
-          <strong>{focalLength}mm</strong>
+          <strong>
+            {focalLength}
+mm
+          </strong>
         </p>
       </section>
 
@@ -63,11 +66,17 @@ const Sensor = observer(({ title }) => {
             .map((sensor, i) => (
               <li key={sensor.name}>
                 <ColorCircle index={i} />
-                <span>{sensor.name}: </span>
-                <strong>{Math.round(focalLength * sensor.crop)}mm</strong>
+                <span>
+                  {sensor.name}
+:
+                  {' '}
+                </span>
+                <strong>
+                  {Math.round(focalLength * sensor.crop)}
+mm
+                </strong>
               </li>
-            ))
-          }
+            ))}
         </List>
 
         <FovCanvas aspect={2 / 1} />

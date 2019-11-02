@@ -9,14 +9,15 @@ class Store {
   }
 
   @observable focalLength = 24;
-  @observable selectedSensorIndices = [this.sensors.findIndex(sensor => sensor.crop === 1)];
+
+  @observable selectedSensorIndices = [this.sensors.findIndex((sensor) => sensor.crop === 1)];
 
   /**
    * Computed property for the full frame sensor
    * @return {obj} - the full frame sensor object
    */
   @computed get fullFrameSensor() {
-    return this.sensors.find(sensor => sensor.crop === 1);
+    return this.sensors.find((sensor) => sensor.crop === 1);
   }
 
   /**

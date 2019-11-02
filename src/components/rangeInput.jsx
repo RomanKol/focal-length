@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-for */
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { observer } from 'mobx-react';
 
 import Slider from 'rc-slider/lib/Slider';

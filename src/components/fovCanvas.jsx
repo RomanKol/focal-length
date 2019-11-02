@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { observer } from 'mobx-react';
 import { observable, autorun } from 'mobx';
 
@@ -13,6 +13,12 @@ const StyledCanvas = styled.canvas`
 `;
 
 @observer class FovCanvas extends Component {
+  @observable width = 0;
+
+  @observable height = 0;
+
+  @observable radius = 0;
+
   constructor(props) {
     super(props);
     this.width = Math.floor(props.containerWidth * window.devicePixelRatio);
@@ -33,9 +39,6 @@ const StyledCanvas = styled.canvas`
     this.updateCanvas();
   }
 
-  @observable width = 0;
-  @observable height = 0;
-  @observable radius = 0;
 
   /**
    * Calcualtes the field of view angle of a sensor for a given focal length
@@ -55,7 +58,7 @@ const StyledCanvas = styled.canvas`
    * @param {number} fov - the field of view in radians
    * @return {number} - the rotated start/end angle
    */
-  calcAngle = fov => (fov / 2) - (Math.PI / 2);
+  calcAngle = (fov) => (fov / 2) - (Math.PI / 2);
 
   /**
    * Update the canvas

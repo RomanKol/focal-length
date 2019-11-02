@@ -1,12 +1,30 @@
 {
-  "presets": [
-    "env",
-    "react"
-  ],
   "plugins": [
-    "transform-decorators-legacy",
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    "emotion"
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    "@babel/plugin-transform-object-assign",
+    "@babel/plugin-proposal-object-rest-spread",
+  ],
+  "presets": [
+    "@babel/preset-react",
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": "last 1 Firefox versions"
+        }
+      }
+    ],
+    "@emotion/babel-preset-css-prop"
   ]
 }

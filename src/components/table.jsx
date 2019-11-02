@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { observer } from 'mobx-react';
 
 import store from '../store';
@@ -26,7 +26,7 @@ export const Th = styled.th`
 `;
 /* eslint-disable no-confusing-arrow */
 export const Tr = styled.tr`
-  ${props => props.selected ? 'background-color: #eee;' : ''}
+  ${(props) => props.selected ? 'background-color: #eee;' : ''}
 `;
 /* eslint-enable no-confusing-arrow */
 
@@ -40,20 +40,26 @@ export const Td = styled.td`
 `;
 
 const SensorTable = observer(({ header }) => {
-  const keys = Object.keys(header).filter(key => !key.startsWith('_'));
+  const keys = Object.keys(header).filter((key) => !key.startsWith('_'));
   const { sensors, selectedSensorIndices } = store;
 
   return (
     <Table>
       <Thead>
         <Tr>
-          {keys.map(key => <Th key={key}>{header[key]}</Th>)}
+          {keys.map((key) => <Th key={key}>{header[key]}</Th>)}
         </Tr>
       </Thead>
       <tbody>
         {sensors.map((item, i) => (
           <Tr key={item.name} selected={selectedSensorIndices.includes(i)}>
-            {keys.map(key => <Td key={`${item.name}-${key}`}> {item[key]} </Td>)}
+            {keys.map((key) => (
+              <Td key={`${item.name}-${key}`}>
+                {' '}
+                {item[key]}
+                {' '}
+              </Td>
+            ))}
           </Tr>
         ))}
       </tbody>
